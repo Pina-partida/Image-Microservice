@@ -31,15 +31,18 @@ def image_channel(source_folder: str, destination_folder: str, file: UploadFile,
             return (False, "Unsupported file type") #boolean needed for Exception
         
         if action == "convert":
+            # if fails try adding converted_path = os.path.join(destination_folder, f"{image_name}.png")
             image.save(image_file_path, "PNG") # PIL working with images save(path, format/ext)
 
             # Check logic based on img_type argument
             if action == "original": 
-                #.save(image_file_path, {file_type}) #path and format; format determined by file extension
+                #.save(destination_path, {file_type}) #path and format; format determined by file extension
                 pass
 
             elif action == "thumbnail":
-                #image.save(image_file_path, {file_type}) #path and format; format determined by file extension
+                #width, height = image.size
+                #image.resize()
+                #image.save(destination_path, {file_type}) #path and format; format determined by file extension
                 pass
         
             
