@@ -2,7 +2,6 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from PIL import Image
 import os
 import io
-import shutil
 # dont use pathlib from Path because user willl define directories
 
 app = FastAPI()
@@ -31,8 +30,9 @@ def image_channel(source_folder: str, destination_folder: str, file: UploadFile,
             return (False, "Unsupported file type") #boolean needed for Exception
         
         if action == "convert":
-            # if fails try adding converted_path = os.path.join(destination_folder, f"{image_name}.png")
-            image.save(image_file_path, "PNG") # PIL working with images save(path, format/ext)
+            converted_path = os.path.join(destination_folder, f"{image_name}.png")
+            image.save(converted_path, "PNG") # PIL working with images save(path, format/ext)
+            return (True, "Image converted to PNG successfully")
 
             # Check logic based on img_type argument
             if action == "original": 
@@ -47,5 +47,15 @@ def image_channel(source_folder: str, destination_folder: str, file: UploadFile,
         
             
 
-    if False:
-        raise HTTPException(status_code=400, detail="Upload unsuccesful")
+@app.post("/upload-image")
+async def upload_image(
+    file: UploadFile = File(...),
+    action: str = "original"
+):
+   
+
+    if not success:
+        raise HTTPException(status_code=400, detail=message)
+
+    return 
+
