@@ -69,15 +69,20 @@ else:
 +---------+---------+
           |
           | HTTP POST /upload-image
-          | HTTP GET /upload-image
-          | HTTP DELETE /upload-image
+          | HTTP GET /fetch-image/{image_name}   
+          | HTTP DELETE /delete-image/{image_name}
           |
           |
           v
-+-------------------+
-|     FastAPI App   |
-|  (upload_image)   |
-+---------+---------+
++-------------------------------------+
+|     FastAPI App                     |
+|     Endpoints:                      |
+|       upload_image()   [POST]       |
+|       fetch_image()    [GET]        |
+|       delete_image()   [DELETE]     |
+|                                     |
+|                                     |
++---------+---------------------------+
           |
           | calls
           v
@@ -88,7 +93,11 @@ else:
 |    source_folder : str                                            |
 |    destination_folder : str                                       |
 |    file : UploadFile                                              |
-|    action : str 
+|    action : str                                                   |
+|    - Validate file extension                                      |
+|    - Create directories                                           |
+|    - Process image based on action                                |
+|    - Save processed output                                        |
 |                                                                   |
 |                                                                   |
 |                                                                   |
