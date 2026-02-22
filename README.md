@@ -59,3 +59,46 @@ if response.status_code == 200:
     print("Success:", response.json()["message"])
 else:
     print("Error:", response.json()["detail"])
+
+
+
+## UML Outline
++-------------------+
+|      Client       |
+|    (Web/ App)     |
++---------+---------+
+          |
+          | HTTP POST /upload-image
+          | HTTP GET /upload-image
+          | HTTP DELETE /upload-image
+          |
+          |
+          v
++-------------------+
+|     FastAPI App   |
+|  (upload_image)   |
++---------+---------+
+          |
+          | calls
+          v
++-------------------------------------------------------------------+
+|                                                                   |
+|  image_channel():                                                 |
+|    Parameters:                                                    |
+|    source_folder : str                                            |
+|    destination_folder : str                                       |
+|    file : UploadFile                                              |
+|    action : str 
+|                                                                   |
+|                                                                   |
+|                                                                   |
+|                                                                   |
++---------+---------+-----------------------------------------------+
+          |
+          | uses
+          v
++-------------------+      +-------------------+
+|     Pillow (PIL)  |      |   OS / File Sys  |
+|  Image Processing |      |  Folder + Saving  |
++-------------------+      +-------------------+
+    
