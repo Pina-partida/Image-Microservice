@@ -20,6 +20,8 @@
 
 ## API Endpoints
 - POST /upload-image
+- GET /fetch-image/{image_name}   
+- DELETE /delete-image/{image_name}
 - multipart/form-data
 
 ## Parameters
