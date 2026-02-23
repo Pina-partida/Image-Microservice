@@ -23,7 +23,7 @@ def image_channel(source_folder: str, destination_folder: str, file: UploadFile,
         image_file_path = os.path.join(source_folder, f"{image_name}.{file_type}") # conjoins indivudl pieces of abs path
         
     
-        image = Image.open(io.BytesIO(image_bytes)).convert("RGBA")  # is is needed modify the images
+        image = Image.open(io.BytesIO(image_bytes)).convert("RGB") # is is needed modify the images dont use RGBA cuass failures due to conversion
 
          # check extensions list.
         if file_type not in ALLOWED:
@@ -48,7 +48,7 @@ def image_channel(source_folder: str, destination_folder: str, file: UploadFile,
             thumbnail_size = (200, 200) # sets max size to 200 px by 200 px
             image.thumbnail(thumbnail_size, Image.Resampling.LANCZOS) # shrinks image proportinally to fit 200x200 using LANCZOS (high quality resampling)
             thumbnail_path = os.path.join(destination_folder, f"{image_name}_thumbnail.{file_type}")
-            image.save(thumbnail_path, file_type.upper() if file_type != "jpeg" else "JPEG") # saves thumbnail with _thumbnail suffix before the extension
+            image.save(thumbnail_path, file_type.upper() if file_type != "jpg" else "JPEG") # saves thumbnail with _thumbnail suffix before the extension
             return (True, "Thumbnail created successfully")
         
     except Exception as e:
