@@ -63,53 +63,7 @@ else:
     print("Error:", response.json()["detail"])
 
 
+## UML Sequence Diagram
 
-## UML Outline
-+-------------------+
-|      Client       |
-|    (Web/ App)     |
-+---------+---------+
-          |
-          | HTTP POST /upload-image
-          | HTTP GET /fetch-image/{image_name}   
-          | HTTP DELETE /delete-image/{image_name}
-          |
-          |
-          v
-+-------------------------------------+
-|     FastAPI App                     |
-|     Endpoints:                      |
-|       upload_image()   [POST]       |
-|       fetch_image()    [GET]        |
-|       delete_image()   [DELETE]     |
-|                                     |
-|                                     |
-+---------+---------------------------+
-          |
-          | calls
-          v
-+-------------------------------------------------------------------+
-|                                                                   |
-|  image_channel():                                                 |
-|    Parameters:                                                    |
-|    source_folder : str                                            |
-|    destination_folder : str                                       |
-|    file : UploadFile                                              |
-|    action : str                                                   |
-|    - Validate file extension                                      |
-|    - Create directories                                           |
-|    - Process image based on action                                |
-|    - Save processed output                                        |
-|                                                                   |
-|                                                                   |
-|                                                                   |
-|                                                                   |
-+---------+---------+-----------------------------------------------+
-          |
-          | uses
-          v
-+-------------------+      +-------------------+
-|     Pillow (PIL)  |      |   OS / File Sys  |
-|  Image Processing |      |  Folder + Saving  |
-+-------------------+      +-------------------+
+![Image Microservice UML](images/uml_sequence_diagram.png)
     
