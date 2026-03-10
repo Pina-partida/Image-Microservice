@@ -7,6 +7,24 @@ import io
 app = FastAPI()
 ALLOWED = {"png", "jpg", "jpeg", "bmp", "gif", "tiff", "webp"}
 
+def convert(image, destination_folder, image_name):
+    converted_path = os.path.join(destination_folder, f"{image_name}.png")
+    image.save(converted_path,"PNG") # PIL working with images save(path, format/ext)
+    return (True, "Image converted to PNG successfully")
+
+def original(image, destination_folder, image_name, file_type):
+    original_path = os.path.join(destination_folder, f"{image_name}.{file_type}")
+    image.save(original_path, file_type.upper() if file_type != "jpg" else "JPEG") # saves image in original formatting to destination folder
+    return (True, "Image saved successfully")
+
+def thumbnail(image, destination_folder, image_name, file_type):
+    width, height = image.size
+    thumbnail_size = (200, 200) # sets max size to 200 px by 200 px
+    image.thumbnail(thumbnail_size, Image.Resampling.LANCZOS) # shrinks image proportinally to fit 200x200 using LANCZOS (high quality resampling)
+    thumbnail_path = os.path.join(destination_folder, f"{image_name}_thumbnail.{file_type}")
+    image.save(thumbnail_path, file_type.upper() if file_type != "jpg" else "JPEG") # saves thumbnail with _thumbnail suffix before the extension
+    return (True, "Thumbnail created successfully")
+
 def image_channel(source_folder: str, destination_folder: str, file: UploadFile, action: str = "original"):
     
     try:
@@ -34,22 +52,15 @@ def image_channel(source_folder: str, destination_folder: str, file: UploadFile,
         
         # Check logic based on action argument
         if action == "convert":
-            converted_path = os.path.join(destination_folder, f"{image_name}.png")
-            image.save(converted_path, "PNG") # PIL working with images save(path, format/ext)
-            return (True, "Image converted to PNG successfully")
+            return convert(image, destination_folder, image_name)
 
         elif action == "original": 
-            original_path = os.path.join(destination_folder, f"{image_name}.{file_type}")
-            image.save(original_path, file_type.upper() if file_type != "jpg" else "JPEG") # saves image in original formatting to destination folder
-            return (True, "Image saved successfully")
+            return original(image, destination_folder, image_name, file_type)
         
         elif action == "thumbnail":
-            width, height = image.size
-            thumbnail_size = (200, 200) # sets max size to 200 px by 200 px
-            image.thumbnail(thumbnail_size, Image.Resampling.LANCZOS) # shrinks image proportinally to fit 200x200 using LANCZOS (high quality resampling)
-            thumbnail_path = os.path.join(destination_folder, f"{image_name}_thumbnail.{file_type}")
-            image.save(thumbnail_path, file_type.upper() if file_type != "jpg" else "JPEG") # saves thumbnail with _thumbnail suffix before the extension
-            return (True, "Thumbnail created successfully")
+            return thumbnail(image, destination_folder, image_name, file_type)
+
+        return (False, f"Unsupported action: {action}")
         
     except Exception as e:
         return (False, f"Error processing image: {str(e)}") # catch any error and return failure tuple with error message
